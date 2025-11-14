@@ -1,0 +1,37 @@
+Comandos:
+Ctrl B = mostra/tira o explorador
+Ctrl J = mostra/tira o  terminal
+Ctrl L = limpa o terminal
+Ctrl D = seleciona vários itens
+Ctrl P = encontra arquivos
+Ctrl C (no terminal) = para a aplicação que está rodando
+Ctrl F = procura termos no arquivo/código
+Ctrl Shift P = abre a paleta de comandos
+LUPA - procura termos no projeto
+Shift alt F = IDENTAÇÃO 
+Shift alt (SETA PRA CIMA OU PRA BAIXO) = DUPLICAR linha/CÓDIGO
+
+rm -rf .git = remove a pasta git (se quiser tirar o versionamento do projeto clonado)
+git add. = adiciona tudo para o commit
+git commit -m "first commit" = faz o commit com a mensagem
+git branch -M main = cria o branch main
+
+cd .. = sai da past/ volta um diretório
+
+cd (inicial da pasta) + tab = entra no diretório
+
+PRA BAIXAR LOCAL O CÓDIGO: vai no repositório > botão Code > Local > pegar o link
+
+no terminal do VS CODE: git clone + link
+baixou o projeto: verifica o package.json
+verifica as DEPENDENCIAS
+
+INSTALAR AS DEPENDENCIAS:
+npm i (gera o node_modulos, ai com o node_modulos que dá pra dar o npm start)
+
+LEVANTA O DB:
+json-server --watch db.json
+
+Services - comunicação com o backend (API)
+
+Batch Rename - renomeia os arquivos em lote (seleciona os arquivos, botão direito do mouse, batch rename)
