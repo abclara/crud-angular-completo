@@ -35,3 +35,7 @@ json-server --watch db.json
 Services - comunicação com o backend (API)
 
 Batch Rename - renomeia os arquivos em lote (seleciona os arquivos, botão direito do mouse, batch rename)
+
+pra fazer o login no front tem que fazer o auth guard
+
+ORDEM: data base > model > rota > aplicação

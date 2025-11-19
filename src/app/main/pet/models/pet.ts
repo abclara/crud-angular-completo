@@ -5,5 +5,5 @@ export interface Pet {
     gender?: string;
     color?: string;
     breed?: string;
-    owner?: string;
+    owner_name?: string;
 }

@@ -20,5 +20,7 @@ export class AppTopBarComponent {
 
     logout() {
        console.log("Saindo...")    
+       localStorage.removeItem('token'); //remove o token do armazenamento local
+       window.location.href = '/login'; //redireciona para a página de login
     };
 }
