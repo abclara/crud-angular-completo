@@ -50,7 +50,7 @@
                             <p-tableCheckbox [value]="pet"></p-tableCheckbox>
                         </td>
                         <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
-                            {{pet.code || pet.id}}
+                            {{pet.id}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Nome</span>
@@ -119,9 +119,9 @@
                 </div>
 
                 <div class="field">
-                    <label for="owner">Dono</label>
-                    <input type="text" pInputText id="owner" [(ngModel)]="pet.owner" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !pet.owner}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !pet.owner">Dono é Obrigatório.</small>
+                    <label for="owner_name">Dono</label>
+                    <input type="text" pInputText id="owner_name" [(ngModel)]="pet.owner_name" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !pet.owner_name}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !pet.owner_name">Dono é Obrigatório.</small>
                 </div>
 
 

@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core'; 
-//faz o modelo do component
-import { Pet } from './models/pet'; 
-// importa a interface Pet (modelo de dados)
+import { Component, OnInit } from '@angular/core';
+import { Pet } from './models/pet';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { PetService } from './services/pet.service'; //serviço que faz a chamada http pro json
+import { PetService } from './services/pet.service';
 
 @Component({
     templateUrl: './pet.component.html',
@@ -32,16 +30,14 @@ export class PetComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
-    // instancia o service
     constructor(private petService: PetService, private messageService: MessageService) { }
-    // o service tá fazendo a chamada http pra pegar os dados do json
-    ngOnInit() {
-        // this.petService.getPets().then(data => this.pets = data); //pegando os dados do json via service
-        this.petService.getPetsAPI().then(data => {
-            console.log('dados da API', data) //chamando e testando a API (no inspecionar tem que aparecer os dados)
-            this.pets = data; //pegando os dados da API via service
-        }); 
 
+    ngOnInit() {
+        this.petService.getPets().then(data => {
+            console.log("no compoente", data) 
+            this.pets = data
+        });
+        
         this.cols = [
             { field: 'pet', header: 'Pet' },
             { field: 'price', header: 'Price' },
@@ -50,11 +46,11 @@ export class PetComponent implements OnInit {
             { field: 'inventoryStatus', header: 'Status' }
         ];
 
-        this.statuses = [
-            { label: 'INSTOCK', value: 'instock' },
-            { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' }
-        ];
+        // this.statuses = [
+        //     { label: 'INSTOCK', value: 'instock' },
+        //     { label: 'LOWSTOCK', value: 'lowstock' },
+        //     { label: 'OUTOFSTOCK', value: 'outofstock' }
+        // ];
     }
 
     openNew() {
@@ -96,28 +92,71 @@ export class PetComponent implements OnInit {
         this.submitted = false;
     }
 
+    // savePet() {
+    //     this.submitted = true;
+
+    //     if (this.pet.name?.trim()) {
+    //         if (this.pet.id) {
+    //             // @ts-ignore
+    //             this.pet.inventoryStatus = this.pet.inventoryStatus?.value ?? this.pet.inventoryStatus;
+    //             this.pets[this.findIndexById(this.pet.id)] = this.pet;
+    //             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Pet Updated', life: 3000 });
+    //         } else {
+    //             this.pet.id = this.createId();
+    //             // @ts-ignore
+    //             this.pet.inventoryStatus = this.pet.inventoryStatus ? this.pet.inventoryStatus.value : 'INSTOCK';
+    //             this.pets.push(this.pet);
+    //             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Pet Created', life: 3000 });
+    //         }
+
+    //         this.pets = [...this.pets];
+    //         this.petDialog = false;
+    //         this.pet = {};
+    //     }
+    // }
+
     savePet() {
-        this.submitted = true;
+    this.submitted = true;
 
-        if (this.pet.name?.trim()) {
-            if (this.pet.id) {
-                // @ts-ignore
-                this.pet.inventoryStatus = this.pet.inventoryStatus.value ? this.pet.inventoryStatus.value : this.pet.inventoryStatus;
-                this.pets[this.findIndexById(this.pet.id)] = this.pet;
+    // verifica se o nome do pet foi preenchido
+    if (this.pet.name?.trim()) {
+        if (this.pet.id) {
+            // atualizar pet existente
+            // @ts-ignore
+            this.pet.inventoryStatus = this.pet.inventoryStatus?.value ?? this.pet.inventoryStatus;
+
+            // chama o service para atualizar no backend
+            this.petService.updatePet(this.pet).then((updatedPet) => {
+                // atualiza o array local de pets
+                const index = this.findIndexById(this.pet.id);
+                this.pets[index] = updatedPet;
+                this.pets = [...this.pets]; // força atualização da tabela
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Pet Updated', life: 3000 });
-            } else {
-                this.pet.id = this.createId();
-                // @ts-ignore
-                this.pet.inventoryStatus = this.pet.inventoryStatus ? this.pet.inventoryStatus.value : 'INSTOCK';
-                this.pets.push(this.pet);
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Pet Created', life: 3000 });
-            }
+                this.petDialog = false;
+                this.pet = {};
+            }).catch(err => {
+                console.error(err);
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update pet', life: 3000 });
+            });
+        } else {
+            // criar novo pet
+            // @ts-ignore
+            this.pet.inventoryStatus = this.pet.inventoryStatus ? this.pet.inventoryStatus.value : 'INSTOCK';
 
-            this.pets = [...this.pets];
-            this.petDialog = false;
-            this.pet = {};
+            // chama o service para criar no backend
+            this.petService.addPet(this.pet).then((newPet) => {
+                this.pets.push(newPet); // adiciona ao array local
+                this.pets = [...this.pets]; // força atualização da tabela
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Pet Created', life: 3000 });
+                this.petDialog = false;
+                this.pet = {};
+            }).catch(err => {
+                console.error(err);
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to create pet', life: 3000 });
+            });
         }
     }
+}
 
     findIndexById(id: string): number {
         let index = -1;
